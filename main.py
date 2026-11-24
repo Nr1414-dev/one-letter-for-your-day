@@ -34,6 +34,12 @@ def main():
     path = os.path.join(OUTPUT_DIR, "entry.txt")
     with open(path, "w", encoding="utf-8", newline="") as f:
         f.write(LETTER)
+    # Read back and verify: the gate fails anything that is not exactly
+    # one character, so refuse to leave a wrong file behind silently.
+    with open(path, "rb") as f:
+        written = f.read()
+    if written != LETTER.encode("utf-8"):
+        raise SystemExit(f"entry.txt holds {written!r}, expected {LETTER!r}")
 
 
 if __name__ == "__main__":
